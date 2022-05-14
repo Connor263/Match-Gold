@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_marginBottom="2dp"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:padding="8dp">
+
+    <TextView
+        android:layout_marginVertical="4dp"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+        android:id="@+id/tv_player_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="name" />
+
+    <TextView
+        android:layout_marginVertical="4dp"
+        android:id="@+id/tv_player_nationality"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_player_team"
+        tools:text="nationality" />
+
+    <TextView
+        android:layout_marginVertical="4dp"
+        android:id="@+id/tv_player_position"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="pos"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_marginVertical="4dp"
+        android:id="@+id/tv_goals"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/goals"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_player_position" />
+
+    <TextView
+        android:layout_marginVertical="4dp"
+        android:id="@+id/tv_player_team"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_player_name"
+        tools:text="team" />
+</androidx.constraintlayout.widget.ConstraintLayout>

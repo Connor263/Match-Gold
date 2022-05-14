@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/startFragment">
+    <fragment
+        android:id="@+id/startFragment"
+        android:name="com.kakaogames.gd.ui.StartFragment"
+        android:label="fragment_start"
+        tools:layout="@layout/fragment_start" >
+        <action
+            android:id="@+id/action_startFragment_to_webViewFragment"
+            app:destination="@id/webViewFragment"
+            app:popUpTo="@id/nav_graph" />
+    </fragment>
+    <fragment
+        android:id="@+id/webViewFragment"
+        android:name="com.kakaogames.gd.ui.web.WebViewFragment"
+        android:label="fragment_web_view"
+        tools:layout="@layout/fragment_web_view" >
+        <argument
+            android:name="link"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/playerFragment"
+        android:name="com.kakaogames.gd.ui.main.player.PlayerFragment"
+        android:label="fragment_player"
+        tools:layout="@layout/fragment_player" >
+        <argument
+            android:name="playerId"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/scoresFragment"
+        android:name="com.kakaogames.gd.ui.main.scores.ScoresFragment"
+        android:label="fragment_scores"
+        tools:layout="@layout/fragment_scores" >
+        <action
+            android:id="@+id/action_scoresFragment_to_playerFragment"
+            app:destination="@id/playerFragment" />
+        <argument
+            android:name="id"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/competitionFragment"
+        android:name="com.kakaogames.gd.ui.main.CompetitionFragment"
+        android:label="fragment_competition"
+        tools:layout="@layout/fragment_competition" >
+        <action
+            android:id="@+id/action_competitionFragment_to_scoresFragment"
+            app:destination="@id/scoresFragment" />
+    </fragment>
+    <action android:id="@+id/action_global_competitionFragment" app:destination="@id/competitionFragment" />
+</navigation>

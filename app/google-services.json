@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "503765189576",
+    "project_id": "match-gold-e9113",
+    "storage_bucket": "match-gold-e9113.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:503765189576:android:f72e64e818f289afd976fd",
+        "android_client_info": {
+          "package_name": "com.kakaogames.gd"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "503765189576-l4v9a92urq7c0l6e738tuue6bfsmm2aq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdz9W3CpzY29Hw7VGC1BMhqQ3xoCnYxHU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "503765189576-l4v9a92urq7c0l6e738tuue6bfsmm2aq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
