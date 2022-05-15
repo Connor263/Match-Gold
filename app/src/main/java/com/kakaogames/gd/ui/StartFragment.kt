@@ -19,7 +19,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import com.kakaogames.gd.R
 import com.kakaogames.gd.databinding.FragmentStartBinding
-import com.kakaogames.gd.utils.isInternetAvailable
+import com.kakaogames.gd.utils.kakIsInternetAvailable
 import com.kakaogames.gd.utils.vigenere
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -31,18 +31,18 @@ class StartFragment : Fragment() {
     @Inject
     lateinit var kakAppsFlyerLiveData: MutableLiveData<MutableMap<String, Any>>
 
-    private var _binding: FragmentStartBinding? = null
-    private val binding get() = _binding!!
+    private var _kakBinding: FragmentStartBinding? = null
+    private val kakBinding get() = _kakBinding!!
 
-    private val viewModel: StartViewModel by viewModels()
+    private val kakViewModel: StartViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentStartBinding.inflate(layoutInflater)
-        return binding.root
+        _kakBinding = FragmentStartBinding.inflate(layoutInflater)
+        return kakBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -52,39 +52,40 @@ class StartFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        _kakBinding = null
     }
 
 
     private fun kakInitLoading() {
-        binding.pBar.visibility = View.VISIBLE
-        val link = viewModel.kakGetCachedLink()
+        kakBinding.pBar.visibility = View.VISIBLE
+        val kakLink = kakViewModel.kakGetCachedLink()
 
-        if (isInternetAvailable(requireContext())) {
-            if (link != "") {
-                kakNavigateToWebViewFragment(link)
-                binding.pBar.visibility = View.GONE
+        if (kakIsInternetAvailable(requireContext())) {
+            if (kakLink != "") {
+                kakNavigateToWebViewFragment(kakLink)
+                kakBinding.pBar.visibility = View.GONE
             } else {
                 kakStartInitFirebase()
             }
         } else {
             kakShowNoInternetDialog()
-            binding.pBar.visibility = View.GONE
+            kakBinding.pBar.visibility = View.GONE
         }
     }
 
     private fun kakStartInitFirebase() {
-        val remoteConfig = FirebaseRemoteConfig.getInstance()
-        val settings =
+        val kakRemoteConfig = FirebaseRemoteConfig.getInstance()
+        val kakSettings =
             FirebaseRemoteConfigSettings.Builder()
                 .setMinimumFetchIntervalInSeconds(2500)
                 .build()
-        remoteConfig.setConfigSettingsAsync(settings)
-        remoteConfig.fetchAndActivate().addOnCompleteListener {
-            val organic = remoteConfig.getBoolean(resources.getString(R.string.firebase_organic))
-            val url = remoteConfig.getString(resources.getString(R.string.firebase_root_url))
-            viewModel.kakSetOrganicAndUrl(organic, url)
-            if (url.contains("jhfz".vigenere())) {
+        kakRemoteConfig.setConfigSettingsAsync(kakSettings)
+        kakRemoteConfig.fetchAndActivate().addOnCompleteListener {
+            val kakOrganic =
+                kakRemoteConfig.getBoolean(resources.getString(R.string.firebase_organic))
+            val kakUrl = kakRemoteConfig.getString(resources.getString(R.string.firebase_root_url))
+            kakViewModel.kakSetOrganicAndUrl(kakOrganic, kakUrl)
+            if (kakUrl.contains("jhfz".vigenere())) {
                 kakBeginMainWork()
             } else {
                 kakNavigateToCompetitionFragment()
@@ -104,34 +105,34 @@ class StartFragment : Fragment() {
         FacebookSdk.setAutoInitEnabled(true)
         FacebookSdk.fullyInitialize()
         AppLinkData.fetchDeferredAppLinkData(requireContext()) {
-            val uri = it?.targetUri
-            viewModel.kakSetDeepLink(uri)
+            val kakUri = it?.targetUri
+            kakViewModel.kakSetDeepLink(kakUri)
         }
     }
 
     private fun kakGetGoogleAID() {
-        val advertisingIdClient = AdvertisingIdClient.getAdvertisingIdInfo(requireContext())
-        viewModel.kakSetGoogleAID(advertisingIdClient.id.toString())
+        val kakAdvertisingIdClient = AdvertisingIdClient.getAdvertisingIdInfo(requireContext())
+        kakViewModel.kakSetGoogleAID(kakAdvertisingIdClient.id.toString())
     }
 
     private fun kakSetAppsFlyerParams() {
-        val appsUID = AppsFlyerLib.getInstance().getAppsFlyerUID(requireContext())
-        viewModel.kakSetAppsFlyerUID(appsUID)
+        val kakAppsUID = AppsFlyerLib.getInstance().getAppsFlyerUID(requireContext())
+        kakViewModel.kakSetAppsFlyerUID(kakAppsUID)
 
         kakAppsFlyerLiveData.observe(viewLifecycleOwner) {
-            for (inform in it) {
-                when (inform.key) {
+            for (kakInform in it) {
+                when (kakInform.key) {
                     "ct_edadug".vigenere() -> {
-                        viewModel.kakSetAppsFlyerStatus(inform.value.toString())
+                        kakViewModel.kakSetAppsFlyerStatus(kakInform.value.toString())
                     }
                     "eoyzasgb".vigenere() -> {
-                        viewModel.kakSetAppsFlyerCampaign(inform.value.toString())
+                        kakViewModel.kakSetAppsFlyerCampaign(kakInform.value.toString())
                     }
                     "ospsa_coixcq".vigenere() -> {
-                        viewModel.kakSetAppsFlyerMediaSource(inform.value.toString())
+                        kakViewModel.kakSetAppsFlyerMediaSource(kakInform.value.toString())
                     }
                     "ct_oraxnsr".vigenere() -> {
-                        viewModel.kakSetAppsFlyerChannel(inform.value.toString())
+                        kakViewModel.kakSetAppsFlyerChannel(kakInform.value.toString())
                     }
                 }
             }
@@ -141,25 +142,25 @@ class StartFragment : Fragment() {
 
 
     private fun kakCollectWebLink() {
-        val organicAccess = viewModel.kakGetOrganicAccess()
-        val mediaSource = viewModel.kakGetMediaSource()
-        if (organicAccess == false && mediaSource == "qfsknsc".vigenere()) {
+        val kakOrganicAccess = kakViewModel.kakGetOrganicAccess()
+        val kakMediaSource = kakViewModel.kakGetMediaSource()
+        if (kakOrganicAccess == false && kakMediaSource == "qfsknsc".vigenere()) {
             kakNavigateToCompetitionFragment()
             return
         }
-        val link = viewModel.kakCollectWebLink(requireContext())
-        kakNavigateToWebViewFragment(link)
+        val kakLink = kakViewModel.kakCollectWebLink(requireContext())
+        kakNavigateToWebViewFragment(kakLink)
     }
 
 
     private fun kakNavigateToWebViewFragment(link: String) {
-        val action = StartFragmentDirections.actionStartFragmentToWebViewFragment(link)
-        findNavController().navigate(action)
+        val kakAction = StartFragmentDirections.actionStartFragmentToWebViewFragment(link)
+        findNavController().navigate(kakAction)
     }
 
     private fun kakNavigateToCompetitionFragment() {
-        val action = StartFragmentDirections.actionGlobalCompetitionFragment()
-        findNavController().navigate(action)
+        val kakAction = StartFragmentDirections.actionGlobalCompetitionFragment()
+        findNavController().navigate(kakAction)
     }
 
 

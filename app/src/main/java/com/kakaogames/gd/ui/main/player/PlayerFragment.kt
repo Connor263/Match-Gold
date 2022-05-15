@@ -12,7 +12,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
 import com.kakaogames.gd.R
 import com.kakaogames.gd.databinding.FragmentPlayerBinding
-import com.kakaogames.gd.utils.showErrorDialog
+import com.kakaogames.gd.utils.kakShowErrorDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -48,7 +48,7 @@ class PlayerFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect {
                     it?.let {
-                        showErrorDialog(requireContext(), { initLoading() }, it.message)
+                        kakShowErrorDialog(requireContext(), { initLoading() }, it.message)
                         viewModel.uiState.update { null }
                     }
                 }

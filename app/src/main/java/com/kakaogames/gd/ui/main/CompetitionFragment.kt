@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.kakaogames.gd.adapter.CompetitionAdapter
 import com.kakaogames.gd.databinding.FragmentCompetitionBinding
 import com.kakaogames.gd.interfaces.ListInterface
-import com.kakaogames.gd.utils.showErrorDialog
+import com.kakaogames.gd.utils.kakShowErrorDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -44,7 +44,7 @@ class CompetitionFragment : Fragment(), ListInterface<Int> {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect {
                     it?.let {
-                        showErrorDialog(requireContext(), { initLoading() }, it.message)
+                        kakShowErrorDialog(requireContext(), { initLoading() }, it.message)
                         viewModel.uiState.update { null }
                     }
                 }

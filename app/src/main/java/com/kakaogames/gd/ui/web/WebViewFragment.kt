@@ -23,7 +23,6 @@ class WebViewFragment : Fragment() {
     private var _binding: FragmentWebViewBinding? = null
     private val binding get() = _binding!!
 
-
     private var kakFileData: ValueCallback<Uri>? = null
     private var kakFilePath: ValueCallback<Array<Uri>>? = null
     private val startFileChooseForResult =
@@ -112,16 +111,16 @@ class WebViewFragment : Fragment() {
         loadUrl(link)
     }
 
-    private fun kakProcessFileChooseResult(data: Intent?) {
+    private fun kakProcessFileChooseResult(kakData: Intent?) {
         if (kakFileData == null && kakFilePath == null) return
 
-        var resultData: Uri? = null
-        var resultsFilePath: Array<Uri>? = null
-        if (data != null) {
-            resultData = data.data
-            resultsFilePath = arrayOf(Uri.parse(data.dataString))
+        var kakResultData: Uri? = null
+        var kakResultsFilePath: Array<Uri>? = null
+        if (kakData != null) {
+            kakResultData = kakData.data
+            kakResultsFilePath = arrayOf(Uri.parse(kakData.dataString))
         }
-        kakFileData?.onReceiveValue(resultData)
-        kakFilePath?.onReceiveValue(resultsFilePath)
+        kakFileData?.onReceiveValue(kakResultData)
+        kakFilePath?.onReceiveValue(kakResultsFilePath)
     }
 }

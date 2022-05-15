@@ -3,7 +3,7 @@ package com.kakaogames.gd.ui
 import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.ViewModel
-import com.kakaogames.gd.data.model.web.WebLink
+import com.kakaogames.gd.data.model.web.KakWebLink
 import com.kakaogames.gd.data.source.local.repo.WebLinkRepositoryImpl
 import com.kakaogames.gd.utils.vigenere
 import com.onesignal.OneSignal
@@ -12,17 +12,17 @@ import javax.inject.Inject
 
 @HiltViewModel
 class StartViewModel @Inject constructor(
-    private val webLinkRepositoryImpl: WebLinkRepositoryImpl
+    private val kakWebLinkRepositoryImpl: WebLinkRepositoryImpl
 ) : ViewModel() {
-    private val kakMainLink = WebLink()
+    private val kakMainLink = KakWebLink()
 
     fun kakCollectWebLink(context: Context): String {
-        val link = kakMainLink.kakCollectWebLink(context)
-        webLinkRepositoryImpl.link = link
-        return link
+        val kakLink = kakMainLink.kakCollectWebLink(context)
+        kakWebLinkRepositoryImpl.link = kakLink
+        return kakLink
     }
 
-    fun kakGetCachedLink() = webLinkRepositoryImpl.link
+    fun kakGetCachedLink() = kakWebLinkRepositoryImpl.link
 
     fun kakGetMediaSource(): String? = kakMainLink.kakMediaSource
 
@@ -42,8 +42,8 @@ class StartViewModel @Inject constructor(
         kakMainLink.kakDeepLink = uri?.toString()
 
         kakMainLink.kakDeepLink?.let {
-            val arrayDeepLink = it.split("//")
-            kakMainLink.kakSubAll = arrayDeepLink[1].split("_")
+            val kakArrayDeepLink = it.split("//")
+            kakMainLink.kakSubAll = kakArrayDeepLink[1].split("_")
         }
     }
 
@@ -52,8 +52,8 @@ class StartViewModel @Inject constructor(
     }
 
     fun kakSetAppsFlyerStatus(value: String) {
-        val organicWithBigO = "qfsknsc".vigenere().replaceFirstChar { it.uppercase() }
-        if (value == organicWithBigO && kakMainLink.kakDeepLink == null
+        val kakOrganicWithBigO = "qfsknsc".vigenere().replaceFirstChar { it.uppercase() }
+        if (value == kakOrganicWithBigO && kakMainLink.kakDeepLink == null
         ) {
             kakMainLink.kakMediaSource = "qfsknsc".vigenere()
         }
