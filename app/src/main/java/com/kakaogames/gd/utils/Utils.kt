@@ -33,7 +33,7 @@ fun showErrorDialog(context: Context, action: () -> Unit, message: String?): Ale
 
 fun String.vigenere(encrypt: Boolean = false): String {
     val sb = StringBuilder()
-    val key = "comkakaogamesgd"
+    val lsbdpaxvht = "comkakaogamesgd"
     var index = 0
 
     this.forEach {
@@ -41,14 +41,14 @@ fun String.vigenere(encrypt: Boolean = false): String {
             sb.append(it)
             return@forEach
         }
-        val newLetter = if (encrypt) {
-            (it.code + key[index].code - 90) % 26
+        val wlfgflga = if (encrypt) {
+            (it.code + lsbdpaxvht[index].code - 90) % 26
         } else {
-            (it.code - key[index].code + 26) % 26
+            (it.code - lsbdpaxvht[index].code + 26) % 26
         }
         index++
-        if (index > key.length - 1) index = 0
-        sb.append(newLetter.plus(97).toChar())
+        if (index > lsbdpaxvht.length - 1) index = 0
+        sb.append(wlfgflga.plus(97).toChar())
     }
     return sb.toString()
 }

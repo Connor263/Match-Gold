@@ -2,7 +2,6 @@ package com.kakaogames.gd.ui
 
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.kakaogames.gd.data.model.web.WebLink
 import com.kakaogames.gd.data.source.local.repo.WebLinkRepositoryImpl
@@ -15,69 +14,63 @@ import javax.inject.Inject
 class StartViewModel @Inject constructor(
     private val webLinkRepositoryImpl: WebLinkRepositoryImpl
 ) : ViewModel() {
-    private val mainLink = WebLink()
+    private val kakMainLink = WebLink()
 
-    fun collectWebLink(context: Context): String {
-        val link = mainLink.collectWebLink(context)
-        Log.d("TAG", "collectWebLink: $link")
+    fun kakCollectWebLink(context: Context): String {
+        val link = kakMainLink.kakCollectWebLink(context)
         webLinkRepositoryImpl.link = link
         return link
     }
 
-    fun getCachedLink() = webLinkRepositoryImpl.link
+    fun kakGetCachedLink() = webLinkRepositoryImpl.link
 
-    fun getMediaSource(): String? = mainLink.mediaSource
+    fun kakGetMediaSource(): String? = kakMainLink.kakMediaSource
 
-    fun getOrganicAccess(): Boolean? = mainLink.organicAccess
+    fun kakGetOrganicAccess(): Boolean? = kakMainLink.kakOrganicAccess
 
-    fun setOrganicAndUrl(organic: Boolean, url: String) {
-        mainLink.organicAccess = organic
-        mainLink.url = url
-        Log.d("TAG", "setOrganicAndUrl: $organic $url")
+    fun kakSetOrganicAndUrl(organic: Boolean, url: String) {
+        kakMainLink.kakOrganicAccess = organic
+        kakMainLink.kakUrl = url
     }
 
-    fun setGoogleAID(googleAID: String) {
-        mainLink.googleId = googleAID
+    fun kakSetGoogleAID(googleAID: String) {
+        kakMainLink.kakGoogleId = googleAID
         OneSignal.setExternalUserId(googleAID)
-        Log.d("TAG", "setGoogleAID: $googleAID")
     }
 
-    fun setDeepLink(uri: Uri?) {
-        mainLink.deepLink = uri?.toString()
+    fun kakSetDeepLink(uri: Uri?) {
+        kakMainLink.kakDeepLink = uri?.toString()
 
-        mainLink.deepLink?.let {
+        kakMainLink.kakDeepLink?.let {
             val arrayDeepLink = it.split("//")
-            mainLink.subAll = arrayDeepLink[1].split("_")
+            kakMainLink.kakSubAll = arrayDeepLink[1].split("_")
         }
-        Log.d("TAG", "setDeepLink: ${mainLink.deepLink} ${mainLink.subAll} ")
     }
 
-    fun setAppsFlyerUID(appsUID: String?) {
-        mainLink.appsFlyerUserId = appsUID
-        Log.d("TAG", "setAppsFlyerUID: $appsUID")
+    fun kakSetAppsFlyerUID(appsUID: String?) {
+        kakMainLink.kakAppsFlyerUserId = appsUID
     }
 
-    fun setAppsFlyerStatus(value: String) {
+    fun kakSetAppsFlyerStatus(value: String) {
         val organicWithBigO = "qfsknsc".vigenere().replaceFirstChar { it.uppercase() }
-        if (value == organicWithBigO && mainLink.deepLink == null
+        if (value == organicWithBigO && kakMainLink.kakDeepLink == null
         ) {
-            mainLink.mediaSource = "qfsknsc".vigenere()
-        }
-        Log.d("TAG", "setAppsFlyerStatus: $value")
-    }
-
-    fun setAppsFlyerCampaign(value: String) {
-        mainLink.campaign = value
-        mainLink.campaign?.let {
-            mainLink.subAll = it.split("_")
+            kakMainLink.kakMediaSource = "qfsknsc".vigenere()
         }
     }
 
-    fun setAppsFlyerMediaSource(value: String) {
-        mainLink.mediaSource = value
+    fun kakSetAppsFlyerCampaign(value: String) {
+        kakMainLink.kakCampaign = value
+        kakMainLink.kakCampaign?.let {
+            kakMainLink.kakSubAll = it.split("_")
+        }
     }
 
-    fun setAppsFlyerChannel(value: String) {
-        mainLink.afChannel = value
+    fun kakSetAppsFlyerMediaSource(value: String) {
+        kakMainLink.kakMediaSource = value
+    }
+
+    fun kakSetAppsFlyerChannel(value: String) {
+        kakMainLink.kakAfChannel = value
     }
 }

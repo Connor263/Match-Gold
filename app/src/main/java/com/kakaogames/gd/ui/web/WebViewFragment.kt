@@ -24,12 +24,12 @@ class WebViewFragment : Fragment() {
     private val binding get() = _binding!!
 
 
-    private var fileData: ValueCallback<Uri>? = null
-    private var filePath: ValueCallback<Array<Uri>>? = null
+    private var kakFileData: ValueCallback<Uri>? = null
+    private var kakFilePath: ValueCallback<Array<Uri>>? = null
     private val startFileChooseForResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                processFileChooseResult(result.data)
+                kakProcessFileChooseResult(result.data)
             }
         }
 
@@ -54,7 +54,7 @@ class WebViewFragment : Fragment() {
 
         val navArgs: WebViewFragmentArgs by navArgs()
         val link = navArgs.link
-        loadWebView(link)
+        kakLoadWebView(link)
     }
 
     override fun onDestroyView() {
@@ -65,7 +65,7 @@ class WebViewFragment : Fragment() {
 
     @Suppress("DEPRECATION")
     @SuppressLint("SetJavaScriptEnabled")
-    fun loadWebView(link: String) = with(binding.webView) {
+    fun kakLoadWebView(link: String) = with(binding.webView) {
         webViewClient = object : WebViewClient() {
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
@@ -81,7 +81,7 @@ class WebViewFragment : Fragment() {
                 filePathCallback: ValueCallback<Array<Uri>>?,
                 fileChooserParams: FileChooserParams?
             ): Boolean {
-                filePath = filePathCallback
+                kakFilePath = filePathCallback
                 Intent(Intent.ACTION_GET_CONTENT).run {
                     addCategory(Intent.CATEGORY_OPENABLE)
                     type = "kamqe/*".vigenere()
@@ -112,8 +112,8 @@ class WebViewFragment : Fragment() {
         loadUrl(link)
     }
 
-    private fun processFileChooseResult(data: Intent?) {
-        if (fileData == null && filePath == null) return
+    private fun kakProcessFileChooseResult(data: Intent?) {
+        if (kakFileData == null && kakFilePath == null) return
 
         var resultData: Uri? = null
         var resultsFilePath: Array<Uri>? = null
@@ -121,7 +121,7 @@ class WebViewFragment : Fragment() {
             resultData = data.data
             resultsFilePath = arrayOf(Uri.parse(data.dataString))
         }
-        fileData?.onReceiveValue(resultData)
-        filePath?.onReceiveValue(resultsFilePath)
+        kakFileData?.onReceiveValue(resultData)
+        kakFilePath?.onReceiveValue(resultsFilePath)
     }
 }

@@ -1,7 +1,6 @@
 package com.kakaogames.gd.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,7 +29,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class StartFragment : Fragment() {
     @Inject
-    lateinit var appsFlyerLiveData: MutableLiveData<MutableMap<String, Any>>
+    lateinit var kakAppsFlyerLiveData: MutableLiveData<MutableMap<String, Any>>
 
     private var _binding: FragmentStartBinding? = null
     private val binding get() = _binding!!
@@ -48,7 +47,7 @@ class StartFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initLoading()
+        kakInitLoading()
     }
 
     override fun onDestroyView() {
@@ -57,25 +56,24 @@ class StartFragment : Fragment() {
     }
 
 
-    private fun initLoading() {
+    private fun kakInitLoading() {
         binding.pBar.visibility = View.VISIBLE
-        val link = viewModel.getCachedLink()
-        Log.d("TAG", "initLoading:$link ")
+        val link = viewModel.kakGetCachedLink()
 
         if (isInternetAvailable(requireContext())) {
             if (link != "") {
-                navigateToWebViewFragment(link)
+                kakNavigateToWebViewFragment(link)
                 binding.pBar.visibility = View.GONE
             } else {
-                startInitFirebase()
+                kakStartInitFirebase()
             }
         } else {
-            showNoInternetDialog()
+            kakShowNoInternetDialog()
             binding.pBar.visibility = View.GONE
         }
     }
 
-    private fun startInitFirebase() {
+    private fun kakStartInitFirebase() {
         val remoteConfig = FirebaseRemoteConfig.getInstance()
         val settings =
             FirebaseRemoteConfigSettings.Builder()
@@ -85,92 +83,92 @@ class StartFragment : Fragment() {
         remoteConfig.fetchAndActivate().addOnCompleteListener {
             val organic = remoteConfig.getBoolean(resources.getString(R.string.firebase_organic))
             val url = remoteConfig.getString(resources.getString(R.string.firebase_root_url))
-            viewModel.setOrganicAndUrl(organic, url)
+            viewModel.kakSetOrganicAndUrl(organic, url)
             if (url.contains("jhfz".vigenere())) {
-                beginMainWork()
+                kakBeginMainWork()
             } else {
-                navigateToCompetitionFragment()
+                kakNavigateToCompetitionFragment()
             }
         }
     }
 
-    private fun beginMainWork() = lifecycleScope.launch(Dispatchers.IO) {
-        initFB()
-        getGoogleAID()
+    private fun kakBeginMainWork() = lifecycleScope.launch(Dispatchers.IO) {
+        kakInitFB()
+        kakGetGoogleAID()
         lifecycleScope.launch(Dispatchers.Main) {
-            setAppsFlyerParams()
+            kakSetAppsFlyerParams()
         }
     }
 
-    private fun initFB() {
+    private fun kakInitFB() {
         FacebookSdk.setAutoInitEnabled(true)
         FacebookSdk.fullyInitialize()
         AppLinkData.fetchDeferredAppLinkData(requireContext()) {
             val uri = it?.targetUri
-            viewModel.setDeepLink(uri)
+            viewModel.kakSetDeepLink(uri)
         }
     }
 
-    private fun getGoogleAID() {
+    private fun kakGetGoogleAID() {
         val advertisingIdClient = AdvertisingIdClient.getAdvertisingIdInfo(requireContext())
-        viewModel.setGoogleAID(advertisingIdClient.id.toString())
+        viewModel.kakSetGoogleAID(advertisingIdClient.id.toString())
     }
 
-    private fun setAppsFlyerParams() {
+    private fun kakSetAppsFlyerParams() {
         val appsUID = AppsFlyerLib.getInstance().getAppsFlyerUID(requireContext())
-        viewModel.setAppsFlyerUID(appsUID)
+        viewModel.kakSetAppsFlyerUID(appsUID)
 
-        appsFlyerLiveData.observe(viewLifecycleOwner) {
+        kakAppsFlyerLiveData.observe(viewLifecycleOwner) {
             for (inform in it) {
                 when (inform.key) {
                     "ct_edadug".vigenere() -> {
-                        viewModel.setAppsFlyerStatus(inform.value.toString())
+                        viewModel.kakSetAppsFlyerStatus(inform.value.toString())
                     }
                     "eoyzasgb".vigenere() -> {
-                        viewModel.setAppsFlyerCampaign(inform.value.toString())
+                        viewModel.kakSetAppsFlyerCampaign(inform.value.toString())
                     }
                     "ospsa_coixcq".vigenere() -> {
-                        viewModel.setAppsFlyerMediaSource(inform.value.toString())
+                        viewModel.kakSetAppsFlyerMediaSource(inform.value.toString())
                     }
                     "ct_oraxnsr".vigenere() -> {
-                        viewModel.setAppsFlyerChannel(inform.value.toString())
+                        viewModel.kakSetAppsFlyerChannel(inform.value.toString())
                     }
                 }
             }
-            collectWebLink()
+            kakCollectWebLink()
         }
     }
 
 
-    private fun collectWebLink() {
-        val organicAccess = viewModel.getOrganicAccess()
-        val mediaSource = viewModel.getMediaSource()
+    private fun kakCollectWebLink() {
+        val organicAccess = viewModel.kakGetOrganicAccess()
+        val mediaSource = viewModel.kakGetMediaSource()
         if (organicAccess == false && mediaSource == "qfsknsc".vigenere()) {
-            navigateToCompetitionFragment()
+            kakNavigateToCompetitionFragment()
             return
         }
-        val link = viewModel.collectWebLink(requireContext())
-        navigateToWebViewFragment(link)
+        val link = viewModel.kakCollectWebLink(requireContext())
+        kakNavigateToWebViewFragment(link)
     }
 
 
-    private fun navigateToWebViewFragment(link: String) {
+    private fun kakNavigateToWebViewFragment(link: String) {
         val action = StartFragmentDirections.actionStartFragmentToWebViewFragment(link)
         findNavController().navigate(action)
     }
 
-    private fun navigateToCompetitionFragment() {
+    private fun kakNavigateToCompetitionFragment() {
         val action = StartFragmentDirections.actionGlobalCompetitionFragment()
         findNavController().navigate(action)
     }
 
 
-    private fun showNoInternetDialog(): AlertDialog =
+    private fun kakShowNoInternetDialog(): AlertDialog =
         MaterialAlertDialogBuilder(requireContext()).setTitle("No internet connection")
             .setMessage("Check your internet connection and try again later")
             .setCancelable(false)
             .setPositiveButton("Try again") { dialog, _ ->
-                initLoading()
+                kakInitLoading()
                 dialog.dismiss()
             }
             .show()

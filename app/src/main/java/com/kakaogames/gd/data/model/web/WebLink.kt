@@ -6,17 +6,17 @@ import com.kakaogames.gd.utils.vigenere
 
 
 data class WebLink(
-    var googleId: String? = null,
-    var appsFlyerUserId: String? = null,
-    var subAll: List<String> = listOf("", "", "", "", "", "", "", "", "", ""),
-    var deepLink: String? = null,
-    var mediaSource: String? = null,
-    var afChannel: String? = null,
-    var campaign: String? = null,
-    var url: String? = null,
-    var organicAccess: Boolean? = null
+    var kakGoogleId: String? = null,
+    var kakAppsFlyerUserId: String? = null,
+    var kakSubAll: List<String> = listOf("", "", "", "", "", "", "", "", "", ""),
+    var kakDeepLink: String? = null,
+    var kakMediaSource: String? = null,
+    var kakAfChannel: String? = null,
+    var kakCampaign: String? = null,
+    var kakUrl: String? = null,
+    var kakOrganicAccess: Boolean? = null
 ) {
-    fun collectWebLink(context: Context): String {
+    fun kakCollectWebLink(context: Context): String {
         val resources = context.resources
         val packageName = context.packageName
         val appsFlyerDevKey = resources.getString(R.string.apps_dev_key)
@@ -24,7 +24,7 @@ data class WebLink(
         val fbAppId = resources.getString(R.string.fb_app_id)
 
         var index = 0
-        val subsString = subAll.joinToString(separator = "") {
+        val subsString = kakSubAll.joinToString(separator = "") {
             index++
             "&sub$index=$it"
         }
@@ -40,16 +40,16 @@ data class WebLink(
         val strCampaign = "&eoyzasgb=".vigenere()
 
 
-        return "${this.url}" +
-                "$strMediaSource${this.mediaSource}" +
-                "$strGoogleId${this.googleId}" +
-                "$strAppsFlyerUserId${this.appsFlyerUserId}" +
+        return "${this.kakUrl}" +
+                "$strMediaSource${this.kakMediaSource}" +
+                "$strGoogleId${this.kakGoogleId}" +
+                "$strAppsFlyerUserId${this.kakAppsFlyerUserId}" +
                 "$strPackageName$packageName" +
                 "$strAppsFlyerDevKey$appsFlyerDevKey" +
                 "$strFbToken$fbToken" +
                 "$strFbAppId$fbAppId" +
-                "$strAfChannel${this.afChannel}" +
-                "$strCampaign${this.campaign}" +
+                "$strAfChannel${this.kakAfChannel}" +
+                "$strCampaign${this.kakCampaign}" +
                 subsString
     }
 }
